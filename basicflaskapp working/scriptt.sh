@@ -1,18 +1,12 @@
 #!/bin/bash
 
 roundrobin() {
-    # Function for handling the round robin 
     local num_containers=$1
     iptables -t nat -A POSTROUTING -j MASQUERADE
-    # Iterate through the desired number of containers
     for (( i=1; i<$num_containers; i++ )); do
-        # Calculate the IP address for this container
         ip_address="168.0.0."$(($i + 2))
-
-        # Calculate the weight for this container in the round-robin sequence
         weight=$(( num_containers - i + 1 ))
 
-        # Construct the docker run command for this container
         iptables -t nat -A PREROUTING -p tcp --destination-port 8080 -m statistic --mode nth --every "$weight" --packet 0 -j DNAT --to-destination "$ip_address":5000
 
         echo "Added round robin rule for container with $ip_address"
