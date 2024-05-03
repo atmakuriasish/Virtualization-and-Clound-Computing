@@ -25,7 +25,7 @@ docker build -t flaskappimg appfolder/.
 ```
 Replace [run|stop|remove] with the desired action.<br>
 Replace [n] with the number of server containers to manage.
-
+Please wait while stopping, it may take few seconds to stop.
 
 ## Start Load Balancer
 ```bash
@@ -40,3 +40,11 @@ docker run -it --cap-add=NET_ADMIN --network=subnett --ip=168.0.0.2 ldblrimg bas
 ```
 Replace [n] with the number of server containers.<br>
 Use r for round-robin forwarding or p for probabilistic forwarding of requests.
+
+
+### Curling the load balancer
+```
+curl 168.0.0.2:8080
+```
+Alternatively, client.py can also be used to do so.
+analysis.sh has been used to analyze results for various hyperparameters.
